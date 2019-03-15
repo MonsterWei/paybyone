@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="io.renren.modules.card.dao.ParitiesDao">
+
+	<!-- 可根据自己的需求，是否要使用 -->
+    <resultMap type="io.renren.modules.card.entity.ParitiesEntity" id="paritiesMap">
+        <result property="paritiesId" column="parities_id"/>
+        <result property="paritiesCurrency" column="parities_currency"/>
+        <result property="paritiesYesterday" column="parities_yesterday"/>
+        <result property="paritiesHandmade" column="parities_handmade"/>
+    </resultMap>
+
+
+</mapper>

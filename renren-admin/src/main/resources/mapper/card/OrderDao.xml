@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="io.renren.modules.card.dao.OrderDao">
+
+	<!-- 可根据自己的需求，是否要使用 -->
+    <resultMap type="io.renren.modules.card.entity.OrderEntity" id="orderMap">
+        <result property="orderId" column="order_id"/>
+        <result property="orderNumber" column="order_number"/>
+        <result property="orderAgentId" column="order_agent_id"/>
+        <result property="orderStatus" column="order_status"/>
+        <result property="orderMoney" column="order_money"/>
+        <result property="orderPayway" column="order_payway"/>
+        <result property="orderPayMoney" column="order_pay_money"/>
+        <result property="orderPayDate" column="order_pay_date"/>
+        <result property="orderExchange" column="order_exchange"/>
+        <result property="orderCreatetime" column="order_createtime"/>
+        <result property="orderModifytime" column="order_modifytime"/>
+        <result property="orderCreateby" column="order_createby"/>
+        <result property="orderModifyby" column="order_modifyby"/>
+        <result property="orderDeleteFlag" column="order_delete_flag"/>
+    </resultMap>
+
+
+</mapper>

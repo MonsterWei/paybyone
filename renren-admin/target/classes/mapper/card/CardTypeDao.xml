@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="io.renren.modules.card.dao.CardTypeDao">
+
+	<!-- 可根据自己的需求，是否要使用 -->
+    <resultMap type="io.renren.modules.card.entity.CardTypeEntity" id="cardTypeMap">
+        <result property="cardTypeId" column="card_type_id"/>
+        <result property="cardTypeName" column="card_type_name"/>
+        <result property="cardTypeDenomination" column="card_type_denomination"/>
+        <result property="cardTypeValidity" column="card_type_validity"/>
+        <result property="cardTypeStatus" column="card_type_status"/>
+        <result property="cardTypeCreatetime" column="card_type_createtime"/>
+        <result property="cardTypeModifytime" column="card_type_modifytime"/>
+    </resultMap>
+
+
+</mapper>

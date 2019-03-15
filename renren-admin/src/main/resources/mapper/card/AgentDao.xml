@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="io.renren.modules.card.dao.AgentDao">
+
+	<!-- 可根据自己的需求，是否要使用 -->
+    <resultMap type="io.renren.modules.card.entity.AgentEntity" id="agentMap">
+        <result property="agentId" column="agent_id"/>
+        <result property="agentName" column="agent_name"/>
+        <result property="agentDiscount" column="agent_discount"/>
+        <result property="agentChangemoney" column="agent_changemoney"/>
+        <result property="agentSolemoney" column="agent_solemoney"/>
+        <result property="agentStatus" column="agent_status"/>
+        <result property="agentLinkman" column="agent_linkman"/>
+        <result property="agentPassword" column="agent_password"/>
+        <result property="agentPhone" column="agent_phone"/>
+        <result property="agentEmail" column="agent_email"/>
+        <result property="agentAddress" column="agent_address"/>
+        <result property="agentCreatetime" column="agent_createtime"/>
+        <result property="agentModifytime" column="agent_modifytime"/>
+    </resultMap>
+
+
+</mapper>
