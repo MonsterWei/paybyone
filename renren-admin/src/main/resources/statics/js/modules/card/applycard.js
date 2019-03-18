@@ -3,26 +3,18 @@ $(function () {
         url: baseURL + 'sys/order/list',
         datatype: "json",
         colModel: [			
-			{ label: 'orderId', name: 'orderId', index: 'order_id', width: 50, key: true },
-			{ label: '', name: 'orderNumber', index: 'order_number', width: 80 }, 			
-			{ label: '', name: 'orderAgentId', index: 'order_agent_id', width: 80 }, 			
-			{ label: '', name: 'orderStatus', index: 'order_status', width: 80 }, 			
-			{ label: '', name: 'orderMoney', index: 'order_money', width: 80 }, 			
-			{ label: '', name: 'orderPayway', index: 'order_payway', width: 80 }, 			
-			{ label: '', name: 'orderPayMoney', index: 'order_pay_money', width: 80 }, 			
-			{ label: '', name: 'orderPayDate', index: 'order_pay_date', width: 80 }, 			
-			{ label: '', name: 'orderExchange', index: 'order_exchange', width: 80 }, 			
-			{ label: '', name: 'orderCreatetime', index: 'order_createtime', width: 80 }, 			
-			{ label: '', name: 'orderModifytime', index: 'order_modifytime', width: 80 }, 			
-			{ label: '', name: 'orderCreateby', index: 'order_createby', width: 80 }, 			
-			{ label: '', name: 'orderModifyby', index: 'order_modifyby', width: 80 }, 			
-			{ label: '', name: 'orderDeleteFlag', index: 'order_delete_flag', width: 80 }			
+			{ label: 'NO', name: 'orderId', index: 'order_id', width: 50, key: true },
+			{ label: 'Order Number', name: 'orderNumber', index: 'order_number', width: 80 },
+			{ label: 'Total Number Of Cards', name: 'managerCardNumber', index: 'manager_card_number', width: 80 },
+			{ label: 'Amount Of Order', name: 'orderMoney', index: 'order_money', width: 80 },
+			{ label: 'Amount Of Payment', name: 'orderPayMoney', index: 'order_pay_money', width: 80 },
+            { label: 'Order Status', name: 'orderStatus', index: 'order_status', width: 80 }
         ],
 		viewrecords: true,
         height: 385,
         rowNum: 10,
 		rowList : [10,30,50],
-        rownumbers: true, 
+        rownumbers: false,
         rownumWidth: 25, 
         autowidth:true,
         multiselect: true,
@@ -48,9 +40,18 @@ $(function () {
 var vm = new Vue({
 	el:'#rrapp',
 	data:{
+		q:{
+            orderNumber: null,
+			orderStatus: 1
+		},
 		showList: true,
 		title: null,
-		order: {}
+		applycard: {
+			orderNumber: null,
+			orderStatus: 1,
+            orderMoney: null,
+            orderPayMoney: null
+		}
 	},
 	methods: {
 		query: function () {
@@ -58,7 +59,7 @@ var vm = new Vue({
 		},
 		add: function(){
 			vm.showList = false;
-			vm.title = "新增";
+			vm.title = "";
 			vm.order = {};
 		},
 		update: function (event) {
@@ -121,7 +122,8 @@ var vm = new Vue({
 		reload: function (event) {
 			vm.showList = true;
 			var page = $("#jqGrid").jqGrid('getGridParam','page');
-			$("#jqGrid").jqGrid('setGridParam',{ 
+			$("#jqGrid").jqGrid('setGridParam',{
+                postData:{'orderNumber': vm.q.orderNumber,'orderStatus':vm.q.orderStatus},
                 page:page
             }).trigger("reloadGrid");
 		}

@@ -1,5 +1,7 @@
 package io.renren.modules.card.service.impl;
 
+import io.renren.common.utils.Constant;
+import org.apache.commons.lang.StringUtils;
 import org.springframework.stereotype.Service;
 import java.util.Map;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
@@ -18,11 +20,16 @@ public class OrderServiceImpl extends ServiceImpl<OrderDao, OrderEntity> impleme
 
     @Override
     public PageUtils queryPage(Map<String, Object> params) {
+        String orderNumber = (String) params.get("orderNumber");
+        String orderStatus = (String) params.get("orderStatus");
+
         IPage<OrderEntity> page = this.page(
                 new Query<OrderEntity>().getPage(params),
                 new QueryWrapper<OrderEntity>()
+                .like(StringUtils.isNotBlank(orderNumber),"order_number",orderNumber)
+                .like(StringUtils.isNotBlank(orderStatus),"order_status",orderStatus)
+                .apply(params.get(Constant.SQL_FILTER) != null, (String)params.get(Constant.SQL_FILTER))
         );
-
         return new PageUtils(page);
     }
 
