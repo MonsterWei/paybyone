@@ -42,15 +42,18 @@ var vm = new Vue({
 	data:{
 		q:{
             orderNumber: null,
-			orderStatus: 1
+			orderStatus: 0
 		},
+		cardTypes: {},
 		showList: true,
 		title: null,
 		applycard: {
 			orderNumber: null,
-			orderStatus: 1,
+			orderStatus: null,
             orderMoney: null,
-            orderPayMoney: null
+            orderPayMoney: null,
+			cardType: null,
+			cardTotal: null
 		}
 	},
 	methods: {
@@ -58,9 +61,24 @@ var vm = new Vue({
 			vm.reload();
 		},
 		add: function(){
+			var url = "sys/cardtype/findType"
+            $.ajax({
+                type: "POST",
+                url: baseURL + url,
+                dataType: "json",
+                success: function(res){
+                   if (res.success){
+						 var list = res.cardTypeList;
+					   	vm.cardTypes=list;
+				   }else{
+					   alert(res.msg)
+				   }
+                }
+            });
+
 			vm.showList = false;
-			vm.title = "";
-			vm.order = {};
+			vm.title = "添加";
+			vm.cardTypes = {};
 		},
 		update: function (event) {
 			var orderId = getSelectedRow();
@@ -126,6 +144,10 @@ var vm = new Vue({
                 postData:{'orderNumber': vm.q.orderNumber,'orderStatus':vm.q.orderStatus},
                 page:page
             }).trigger("reloadGrid");
-		}
+		},
+        addTable:function () {
+
+			
+        }
 	}
 });
