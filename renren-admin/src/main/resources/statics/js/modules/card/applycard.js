@@ -55,10 +55,10 @@ var vm = new Vue({
 			orderStatus: 0
 		},
 		cardTypes: {},
-		trId:null,
+        amountOfOrder:0,
 		showList: true,
 		title: null,
-        totalCardValue: null,
+        totalCardValue: 0,
         cardTypeDenomination: null,
 		applycard: {
 			orderNumber: null,
@@ -187,15 +187,16 @@ var vm = new Vue({
             }
 			row.innerHTML="<td style='text-align:center;vertical-align:middle'>"+(trs.length-6)+"</td>" +
 						  "<td style='text-align:center;vertical-align:middle'>"+vm.applycard.cardTypeName+'</td>'+
-						  "<td style='text-align:center;vertical-align:middle'>"+vm.cardTypeDenomination.toFixed(2)+'</td>' +
+						  "<td style='text-align:center;vertical-align:middle'>"+"$"+vm.cardTypeDenomination.toFixed(2)+'</td>' +
 						  "<td style='text-align:center;vertical-align:middle'><input type='text'  onchange='vm.total(this.value," +
-						  "this.parentNode.previousSibling.innerText," +
+						  "this.parentNode.previousSibling.innerText.substring(1)," +
 						  "this.parentNode.previousSibling.previousSibling.previousSibling.innerText)' " +
 						  "value="+vm.applycard.cardTotal+"></td>";
 			tradd.appendChild(row);
 
             var totalCardValue = vm.applycard.cardTotal*vm.cardTypeDenomination;
             vm.totalCardValue += totalCardValue;
+            vm.amountOfOrder = (vm.totalCardValue*1).toFixed(2);
 
 		},
         total:function (number,total,trid) {
@@ -215,7 +216,7 @@ var vm = new Vue({
                 if (trid==(rows[i].cells[0].innerHTML)){
                     rows[i].cells[3].innerHTML=
 						"<input type=\'text\'  onchange=\'vm.total(this.value," +
-						"this.parentNode.previousSibling.innerText," +
+						"this.parentNode.previousSibling.innerText.substring(1)," +
 						"this.parentNode.previousSibling.previousSibling.previousSibling.innerText)\' " +
 						"value="+number+">" +
 						"</td>"
@@ -223,10 +224,10 @@ var vm = new Vue({
                    vm.totalCardValue=b;
                 }else {
                 	a=rows[i].cells[3].childNodes;
-                    c=rows[i].cells[2].innerHTML;
+                    c=rows[i].cells[2].innerHTML.substring(1);
                     rows[i].cells[3].innerHTML=
 						"<input type=\'text\'  onchange=\'vm.total(this.value," +
-						"this.parentNode.previousSibling.innerText," +
+						"this.parentNode.previousSibling.innerText.substring(1)," +
 						"this.parentNode.previousSibling.previousSibling.previousSibling.innerText)\' " +
 						"value="+a[0].value+"></td>"
 					b += (parseFloat(c)*parseInt(a[0].value));
@@ -237,6 +238,7 @@ var vm = new Vue({
 
 
             }
+            vm.amountOfOrder = (vm.totalCardValue*1).toFixed(2);
 
 
 
