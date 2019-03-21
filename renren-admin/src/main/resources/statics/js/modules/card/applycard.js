@@ -8,7 +8,17 @@ $(function () {
 			{ label: 'Total Number Of Cards', name: 'managerCardNumber', index: 'manager_card_number', width: 80 },
 			{ label: 'Amount Of Order', name: 'orderMoney', index: 'order_money', width: 80 },
 			{ label: 'Amount Of Payment', name: 'orderPayMoney', index: 'order_pay_money', width: 80 },
-            { label: 'Order Status', name: 'orderStatus', index: 'order_status', width: 80 }
+            { label: 'Order Status', name: 'orderStatus', index: 'order_status', width: 80 ,
+                formatter: function(value, options, row){
+					var orderStatus="";
+            		if (value==1)orderStatus="<a href=''>Outstanding</a>";
+                    if (value==2)orderStatus="Verifying";
+                    if (value==3)orderStatus="Proceeding";
+                    if (value==4)orderStatus="lssuing";
+                    if (value==5)orderStatus="lssued";
+                    return orderStatus;
+            	}
+            }
         ],
 		viewrecords: true,
         height: 385,
@@ -45,15 +55,20 @@ var vm = new Vue({
 			orderStatus: 0
 		},
 		cardTypes: {},
+		trId:null,
 		showList: true,
 		title: null,
+        totalCardValue: null,
+        cardTypeDenomination: null,
 		applycard: {
 			orderNumber: null,
 			orderStatus: null,
             orderMoney: null,
             orderPayMoney: null,
+            cardTypeName: 0,
 			cardType: null,
-			cardTotal: null
+			cardTotal: null,
+            cardTypeDenomination:null
 		}
 	},
 	methods: {
@@ -61,6 +76,7 @@ var vm = new Vue({
 			vm.reload();
 		},
 		add: function(){
+
 			var url = "sys/cardtype/findType"
             $.ajax({
                 type: "POST",
@@ -68,14 +84,13 @@ var vm = new Vue({
                 dataType: "json",
                 success: function(res){
                    if (res.success){
-						 var list = res.cardTypeList;
+					   	var list = res.cardTypeList;
 					   	vm.cardTypes=list;
 				   }else{
 					   alert(res.msg)
 				   }
                 }
             });
-
 			vm.showList = false;
 			vm.title = "添加";
 			vm.cardTypes = {};
@@ -87,7 +102,7 @@ var vm = new Vue({
 			}
 			vm.showList = false;
             vm.title = "修改";
-            
+
             vm.getInfo(orderId)
 		},
 		saveOrUpdate: function (event) {
@@ -113,7 +128,7 @@ var vm = new Vue({
 			if(orderIds == null){
 				return ;
 			}
-			
+
 			confirm('确定要删除选中的记录？', function(){
 				$.ajax({
 					type: "POST",
@@ -145,9 +160,86 @@ var vm = new Vue({
                 page:page
             }).trigger("reloadGrid");
 		},
+        findAll: function (event) {
+            vm.showList = true;
+            var page = $("#jqGrid").jqGrid('getGridParam','page');
+            $("#jqGrid").jqGrid('setGridParam',{
+              postData:{'orderNumber': "",'orderStatus':"0"},
+                page:page
+            }).trigger("reloadGrid");
+        },
         addTable:function () {
+			var tradd =document.getElementById("addTB");
+			var row = tradd.insertRow(0);
 
-			
+			var trs = document.getElementsByTagName("tr");
+
+
+
+            if (vm.applycard.cardTypeName=="Please select"||vm.applycard.cardTotal==null){
+					alert("'Card Type 'cannot be empty or 'Please Select' is not a type");
+					return;
+            }
+            for(var a=0;a<vm.cardTypes.length;a++) {
+				if(vm.cardTypes[a].cardTypeName==vm.applycard.cardTypeName){
+					vm.cardTypeDenomination=vm.cardTypes[a].cardTypeDenomination;
+				}
+            }
+			row.innerHTML="<td style='text-align:center;vertical-align:middle'>"+(trs.length-6)+"</td>" +
+						  "<td style='text-align:center;vertical-align:middle'>"+vm.applycard.cardTypeName+'</td>'+
+						  "<td style='text-align:center;vertical-align:middle'>"+vm.cardTypeDenomination.toFixed(2)+'</td>' +
+						  "<td style='text-align:center;vertical-align:middle'><input type='text'  onchange='vm.total(this.value," +
+						  "this.parentNode.previousSibling.innerText," +
+						  "this.parentNode.previousSibling.previousSibling.previousSibling.innerText)' " +
+						  "value="+vm.applycard.cardTotal+"></td>";
+			tradd.appendChild(row);
+
+            var totalCardValue = vm.applycard.cardTotal*vm.cardTypeDenomination;
+            vm.totalCardValue += totalCardValue;
+
+		},
+        total:function (number,total,trid) {
+
+            Vue.set(vm.applycard,'cardTotal',number);
+			var tradd =document.getElementById("addTB");
+            var rows = tradd.rows;
+
+            var a;
+            var c;
+            var b=0;
+            var d;
+            vm.totalCardValue=0;
+            for(var i=1;i<rows.length;i++){ //遍历表格的行
+
+
+                if (trid==(rows[i].cells[0].innerHTML)){
+                    rows[i].cells[3].innerHTML=
+						"<input type=\'text\'  onchange=\'vm.total(this.value," +
+						"this.parentNode.previousSibling.innerText," +
+						"this.parentNode.previousSibling.previousSibling.previousSibling.innerText)\' " +
+						"value="+number+">" +
+						"</td>"
+                    b +=(parseFloat(total)*parseInt(number));
+                   vm.totalCardValue=b;
+                }else {
+                	a=rows[i].cells[3].childNodes;
+                    c=rows[i].cells[2].innerHTML;
+                    rows[i].cells[3].innerHTML=
+						"<input type=\'text\'  onchange=\'vm.total(this.value," +
+						"this.parentNode.previousSibling.innerText," +
+						"this.parentNode.previousSibling.previousSibling.previousSibling.innerText)\' " +
+						"value="+a[0].value+"></td>"
+					b += (parseFloat(c)*parseInt(a[0].value));
+					vm.totalCardValue=b;
+                }
+
+
+
+
+            }
+
+
+
         }
 	}
 });

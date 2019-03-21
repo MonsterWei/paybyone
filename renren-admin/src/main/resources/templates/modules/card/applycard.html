@@ -24,7 +24,7 @@
                </select>
             </div>
             <a class="btn btn-default" @click="query">查询</a>
-
+            <a class="btn btn-default" @click="findAll">All</a>
 
             <#if shiro.hasPermission("sys:order:save")>
             <a class="btn btn-primary" @click="add"><i class="fa fa-plus"></i>&nbsp;+Apply</a>
@@ -42,14 +42,15 @@
     </div>
 
     <div v-show="!showList" class="panel panel-default">
-      <div class="panel-heading">{{title}}</div>
+      <div class="panel-heading"></div>
      <!--   <form class="form-horizontal">-->
 
             <label class="col-sm-1">Card Type:</label>
             <div class="form-group col-sm-2">
-                <select  class="form-control" >
+                <select  class="form-control" v-model="applycard.cardTypeName">
+                    <option value="0">Please select</option>
                     <option v-for="cardType in cardTypes">{{cardType.cardTypeName}}</option>
-               </select>
+                 </select>
             </div>
             <label class="col-sm-1">Card Total:</label>
             <div class="form-group col-sm-2">
@@ -62,19 +63,23 @@
 
 
 
-        <table style="border-style:inherit;border-radius:5px;overflow:hidden;"  class="col-sm-12 panel-heading"  id="addTB">
+        <table style="border-style:inherit;border-radius:5px;overflow:hidden;" border="3" class="col-sm-12 panel-heading"  id="addTB">
 
-                <thead>
                     <tr style="height: 40px">
-                        <th>NO</th>
-                        <th>Card Type</th>
-                        <th>Denomination</th>
-                        <th>Total Number Of Cards</th>
+                        <th style="text-align:center;vertical-align:middle">NO</th>
+                        <th style="text-align:center;vertical-align:middle">Card Type</th>
+                        <th style="text-align:center;vertical-align:middle">Denomination</th>
+                        <th style="text-align:center;vertical-align:middle">Total Number Of Cards</th>
                     </tr>
-                </thead>
-                <tbody></tbody>
-</table>
 
+        </table>
+        <div class="col-sm-12">
+            Total CardValue:{{totalCardValue}}
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            <span>Amount Of Order</span>:{{}}
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            <span>Applican</span>
+        </div>
 
 
 
@@ -106,8 +111,8 @@
 -->
             <div class="form-group col-sm-12">
                 <div class="control-label"></div>
-                <input type="button" class="btn btn-primary" @click="saveOrUpdate" value="确定"/>
-                &nbsp;&nbsp;<input type="button" class="btn btn-warning" @click="reload" value="返回"/>
+               Operate <input type="button" class="btn btn-warning" @click="reload" value="save"/>
+                &nbsp;&nbsp;<input type="button" class="btn btn-primary" @click="saveOrUpdate" value="pay"/>
             </div>
     <!--    </form>-->
     </div>

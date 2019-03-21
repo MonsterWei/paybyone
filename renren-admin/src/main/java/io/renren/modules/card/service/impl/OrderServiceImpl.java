@@ -23,6 +23,14 @@ public class OrderServiceImpl extends ServiceImpl<OrderDao, OrderEntity> impleme
         String orderNumber = (String) params.get("orderNumber");
         String orderStatus = (String) params.get("orderStatus");
 
+
+        if (orderStatus!=null){
+            if(orderStatus.equals("0")){
+                orderStatus="";
+            }
+        }
+
+
         IPage<OrderEntity> page = this.page(
                 new Query<OrderEntity>().getPage(params),
                 new QueryWrapper<OrderEntity>()
